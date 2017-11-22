@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .who_poked{
+        width: 300px;
+        height:90px ;
+        outline: 2px solid black;
+        padding: 5px;
+        overflow: scroll;
+        margin-bottom: 50px;
+    
+        }
+        h4,p{
+            margin:0px;
+        }
+        table, th, td {
+        border: 2px solid black;
+        border-collapse: collapse;
+        padding: 4px;
+        }
+        table {
+        width: 700px;
+        }
+        th{
+            background-color: silver;
+        }
+        button{
+        
+        box-shadow: 3px 3px 3px #888888;
+        margin-left: 12px;
+        }
+    </style>
+</head>
+<body>
+    {%for message in messages%}
+        <p>{{message}}</p>
+    {%endfor%}
+    <h2>Welcome , {{request.session.alias}} ! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="/logout">Logout</a></h2>
+    {% if user_poke_count.count == 0 %}
+        <h3>No one poked you yet</h3>
+    {%else %}
+        <h3>{{user_poke_count.count}} : People poked you ! </h3>
+        <div class="who_poked">
+        <h4>List of people who have poked you</h4> <br>
+        {% for user in list_of_users %}
+            <p>{{user.poker.name}} </p> 
+        {%endfor%}
+        </div>
+    {%endif%}
+
+<h3>People you may want to poke :</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Alias</th>
+            <th>Email Address</th>
+            <th>Poke History</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr>
+            <td>{{user.name}}</td>
+            <td>{{user.alias}}</td>
+            <td>{{user.email}}</td>
+            
+    {% for poke in pokes %}
+        {% if poke.id == user.id %}
+            <td>{{user.pokedpokes.count}}</td>
+        {%endif%}
+    {%endfor%}
+            <td><a href="/main/pokes/{{user.id}}/"><button>Poke</button></a></td>
+        </tr>
+
+    {%endfor%}
+    </tbody>
+</table>
+</body>
+</html>
